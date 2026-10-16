@@ -89,3 +89,7 @@ phpunit_output.txt
 install.sh
 /update/
 .superpowers/
+
+# --------------- Code Coverage ---------------
+/build/coverage/
+/coverage/

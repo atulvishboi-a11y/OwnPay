@@ -116,6 +116,13 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --colors=always
 
+      - name: Upload coverage artifact
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report-php
+          path: build/coverage/cobertura.xml
+
   # ──────────────────────────────────────────────
   # Twig CS Fixer — template lint
   # ──────────────────────────────────────────────
@@ -184,7 +191,14 @@ jobs:
         run: npm ci
 
       - name: Vitest
-        run: npm test
+        run: npm run test:coverage
+
+      - name: Upload coverage artifact
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report-javascript
+          path: coverage/cobertura-coverage.xml
 
   # ──────────────────────────────────────────────
   # Composer Audit — dependency vulnerability check
@@ -209,3 +223,49 @@ jobs:
 
       - name: Composer audit
         run: composer audit
+
+  # ──────────────────────────────────────────────
+  # Upload Coverage — publish PHP coverage report
+  # ──────────────────────────────────────────────
+  upload-coverage-php:
+    name: Upload PHP Coverage
+    needs: phpunit
+    if: ${{ !cancelled() && needs.phpunit.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      code-quality: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: coverage-report-php
+
+      - uses: actions/upload-code-coverage@v1
+        with:
+          file: cobertura.xml
+          language: PHP
+          label: code-coverage-agent
+
+  # ──────────────────────────────────────────────
+  # Upload Coverage — publish JavaScript coverage report
+  # ──────────────────────────────────────────────
+  upload-coverage-javascript:
+    name: Upload JavaScript Coverage
+    needs: frontend-test
+    if: ${{ !cancelled() && needs.frontend-test.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      code-quality: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: coverage-report-javascript
+
+      - uses: actions/upload-code-coverage@v1
+        with:
+          file: cobertura-coverage.xml
+          language: JavaScript
+          label: code-coverage-agent
