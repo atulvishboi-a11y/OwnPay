@@ -17,6 +17,7 @@ permissions:
 jobs:
   pullfrog:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     permissions:
       id-token: write
       contents: read
