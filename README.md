@@ -371,13 +371,6 @@ OwnPay is shipping toward a stable **1.0**. Highlights on the horizon: a public 
 
 <div align="center">
 
-### Supported by
-
-[![Mintlify](https://mintcdn.com/mintlify/ZmWpbGQa5yv5AElR/logo/light.svg)](https://mintlify.com)
-
-[![Greptile: The War on Bugs](https://www.greptile.com/badge.svg)](https://www.greptile.com/?utm_source=oss_badge&utm_medium=readme&utm_campaign=greptile_for_open_source)
-
-
 ### Elite Sponsor
 
 <a href="https://namepart.com/aff.php?aff=268" target="_blank" rel="noopener noreferrer"><img src="https://ownpay.org/assets/img/sponsors/namepart_logo.png" height="40" alt="Namepart - Powering open-source fintech infrastructure"></a>
