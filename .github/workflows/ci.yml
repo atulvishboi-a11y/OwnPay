@@ -121,12 +121,7 @@ jobs:
       # trend data flowing on the default branch despite pre-existing,
       # unrelated test failures.
       - name: Upload coverage artifact
-        if: !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-# Affected sites
-# - .github/workflows/ci.yml:124 — step condition uses always()
-# Required outcome
-# - Upload step runs on PHPUnit success or failure, but not on cancellation.
-# Suggested approach (see suggestion above).
+        if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
         uses: actions/upload-artifact@v7
         with:
           name: coverage-report-php
