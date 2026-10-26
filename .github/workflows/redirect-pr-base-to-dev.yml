@@ -14,7 +14,8 @@ jobs:
     if: github.event.pull_request.base.ref == 'main'
     steps:
       - name: Change base branch to dev
-        run: gh pr edit "$PR_NUMBER" --base dev
+        run: gh pr edit "$PR_NUMBER" --repo "$REPOSITORY" --base dev
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

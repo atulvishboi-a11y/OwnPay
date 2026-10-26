@@ -20,7 +20,8 @@ jobs:
         uses: dependabot/fetch-metadata@v2
 
       - name: Auto-merge Dependabot PR
-        run: gh pr merge --auto --squash "$PR_NUMBER"
+        run: gh pr merge --auto --squash "$PR_NUMBER" --repo "$REPOSITORY"
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
