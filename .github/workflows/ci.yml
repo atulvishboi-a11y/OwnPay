@@ -72,7 +72,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: PHPStan
-        run: vendor/bin/phpstan analyse --no-progress --error-format=github
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G --error-format=github
 
   # ──────────────────────────────────────────────
   # PHPUnit — unit + integration + feature tests
@@ -111,7 +111,9 @@ jobs:
       - name: Initialize test database
         run: |
           mysql -h 127.0.0.1 -u root -proot ownpay_test < database/schema.sql
-        continue-on-error: true
+          for f in database/seeds/*.sql; do
+            mysql -h 127.0.0.1 -u root -proot ownpay_test < "$f"
+          done
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --colors=always
